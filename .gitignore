@@ -1,0 +1,6 @@
+.gradle
+CoinChecker.iml
+local.properties
+.idea
+app.iml
+app/build

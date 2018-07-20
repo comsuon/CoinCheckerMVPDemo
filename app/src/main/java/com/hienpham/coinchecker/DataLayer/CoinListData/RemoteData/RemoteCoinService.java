@@ -3,6 +3,7 @@ package com.hienpham.coinchecker.DataLayer.CoinListData.RemoteData;
 import com.hienpham.coinchecker.Core.Thread.AppExecutor;
 import com.hienpham.coinchecker.DataLayer.Webservice;
 import com.hienpham.coinchecker.Model.Coin;
+import com.hienpham.coinchecker.Model.CoinListRes;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,6 +11,9 @@ import java.util.List;
 import retrofit2.Response;
 
 public class RemoteCoinService {
+
+    public static int CMC_START_DEFAULT = 1;
+
     AppExecutor mExecutor;
     CMCService mCoinService;
 
@@ -18,13 +22,20 @@ public class RemoteCoinService {
         mCoinService = new Webservice().getCoinService();
     }
 
-    public void getCoinList(final int start, final GetCoinListCallbacks listener) {
+    public void fetchCoinList(final int start, final GetCoinListCallbacks listener) {
         mExecutor.getNetworkExecutor().execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Response<List<Coin>> response = mCoinService.getCoinList(start).execute();
-                    listener.onRemoteCoinListLoaded(response.body());
+                    final Response<CoinListRes> response = mCoinService.getCoinList(start).execute();
+                    if(null != listener) {
+                        mExecutor.getMainThread().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                listener.onRemoteCoinListLoaded(response.body().getCoinList());
+                            }
+                        });
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -38,5 +49,9 @@ public class RemoteCoinService {
 
     public interface GetCoinListCallbacks {
         void onRemoteCoinListLoaded (List<Coin> coinList);
+    }
+
+    public interface GetSpecificCoinCallbacks {
+        void onRemoteSpecificCoinLoaded(Coin coin);
     }
 }

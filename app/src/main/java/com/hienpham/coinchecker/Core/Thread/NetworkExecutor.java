@@ -12,7 +12,7 @@ public class NetworkExecutor implements Executor {
     Executor mNetworkExecutor;
 
     public NetworkExecutor () {
-        mNetworkExecutor = Executors.newFixedThreadPool(3);
+        mNetworkExecutor = Executors.newFixedThreadPool(POOL_LIMIT);
     }
 
     @Override

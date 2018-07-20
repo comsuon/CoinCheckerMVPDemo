@@ -9,12 +9,12 @@ import java.util.List;
 public class CoinListContract {
 
     public interface CoinListView extends BaseView{
-        public void showLoading();
-        public void hideLoading();
-        public void populateCoinlist(List<Coin> coinList);
+        void showLoading();
+        void hideLoading();
+        void populateCoinlist(List<Coin> coinList);
     }
 
     public interface CoinListPresenter extends BasePresenter {
-        public void onResume();
+        void onResume();
     }
 }

@@ -3,21 +3,24 @@ package com.hienpham.coinchecker.CoinList;
 import android.support.annotation.NonNull;
 
 import com.hienpham.coinchecker.BaseView;
+import com.hienpham.coinchecker.CoinList.CoinListContract.CoinListView;
+import com.hienpham.coinchecker.DataLayer.CoinListData.RemoteData.RemoteCoinService;
 import com.hienpham.coinchecker.Model.Coin;
 
 import java.util.List;
 
-public class CoinListPresenterImp implements CoinListContract.CoinListPresenter, CoinListModel.CoinListDataCallbacks {
+public class CoinListPresenterImp implements CoinListContract.CoinListPresenter, CoinListModel.CoinListModelCallbacks {
     CoinListContract.CoinListView mView;
+
     CoinListModel mModel;
 
     public CoinListPresenterImp (){
-        mModel = new CoinListRepo(this);
+        mModel = new CoinListModelImp(this);
     }
 
     @Override
     public void onResume() {
-        loadCoinList(0);
+        loadCoinList(RemoteCoinService.CMC_START_DEFAULT);
     }
 
     private void loadCoinList(int start) {
@@ -25,15 +28,6 @@ public class CoinListPresenterImp implements CoinListContract.CoinListPresenter,
         mModel.getCoinList(start);
     }
 
-    @Override
-    public void attachView(@NonNull BaseView view) {
-        mView = (CoinListContract.CoinListView) view;
-    }
-
-    @Override
-    public void detachView() {
-        mView = null;
-    }
 
     @Override
     public void onCoinListLoaded(List<Coin> coinList) {
@@ -41,5 +35,15 @@ public class CoinListPresenterImp implements CoinListContract.CoinListPresenter,
             mView.hideLoading();
             mView.populateCoinlist(coinList);
         }
+    }
+
+    @Override
+    public void attachView(BaseView view) {
+        mView = (CoinListView) view;
+    }
+
+    @Override
+    public void detachView() {
+
     }
 }

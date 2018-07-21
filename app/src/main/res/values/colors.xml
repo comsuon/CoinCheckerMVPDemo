@@ -5,4 +5,5 @@
     <color name="colorAccent">#feb204</color>
     <color name="lightControl">#ffb56c</color>
     <color name="dumpRed">#e54062</color>
+    <color name="secondaryText">#aed0db</color>
 </resources>

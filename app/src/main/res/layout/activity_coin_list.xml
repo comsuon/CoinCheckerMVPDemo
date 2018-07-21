@@ -9,15 +9,19 @@
         android:layout_height="?android:actionBarSize"
         android:layout_width="match_parent"
         android:layout_alignParentTop="true"/>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
         android:layout_below="@id/toolbar">
-
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+        </android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
     <android.support.v4.widget.ContentLoadingProgressBar
         android:id="@+id/progressBar"
         style="?android:progressBarStyleLargeInverse"

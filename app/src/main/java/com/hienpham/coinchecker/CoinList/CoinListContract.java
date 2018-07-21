@@ -12,9 +12,11 @@ public class CoinListContract {
         void showLoading();
         void hideLoading();
         void populateCoinlist(List<Coin> coinList);
+        void refreshCoinList(List<Coin> coinsList);
     }
 
     public interface CoinListPresenter extends BasePresenter {
+        void getCoinListInterval();
         void onResume();
     }
 }

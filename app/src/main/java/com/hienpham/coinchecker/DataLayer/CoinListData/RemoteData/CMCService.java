@@ -7,12 +7,13 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface CMCService{
 
-
+    @Headers("Cache-Control: no-cache")
     @GET("ticker/?structure=array")
     Call<CoinListRes> getCoinList(@Query("start") int start);
 

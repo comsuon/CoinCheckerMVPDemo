@@ -2,6 +2,7 @@
 package com.hienpham.coinchecker.CoinList;
 
 import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,9 +25,11 @@ public class CoinListActivity extends BaseActivity implements CoinListContract.C
 
     RecyclerView mRecyclerView;
 
+    SwipeRefreshLayout mRefreshLayout;
+
     @Override
     public void showLoading() {
-        if(null != mProgressBar && !mProgressBar.isShown()) mProgressBar.show();
+        if(null != mProgressBar) mProgressBar.show();
     }
 
     @Override
@@ -43,6 +46,16 @@ public class CoinListActivity extends BaseActivity implements CoinListContract.C
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(new CoinListAdapter(this));
 
+        mRefreshLayout = findViewById(R.id.refreshLayout);
+
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mRefreshLayout.setRefreshing(false);
+                mPresenter.onResume();
+            }
+        });
+
     }
 
     @Override
@@ -50,12 +63,18 @@ public class CoinListActivity extends BaseActivity implements CoinListContract.C
         super.onResume();
         if(null == mPresenter) initPresenter();
 
-        mPresenter.onResume();
+        mPresenter.getCoinListInterval();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mPresenter.detachView();
     }
 
     @Override
     public void hideLoading() {
-        if(null != mProgressBar && mProgressBar.isShown()) mProgressBar.hide();
+        if(null != mProgressBar) mProgressBar.hide();
     }
 
     @Override
@@ -64,6 +83,13 @@ public class CoinListActivity extends BaseActivity implements CoinListContract.C
 
         if(null != this.mRecyclerView && null != this.mRecyclerView.getAdapter()) {
             ((CoinListAdapter)this.mRecyclerView.getAdapter()).setData(coinList);
+        }
+    }
+
+    @Override
+    public void refreshCoinList(List<Coin> coinList) {
+        if(null != this.mRecyclerView && null != this.mRecyclerView.getAdapter()) {
+            ((CoinListAdapter)this.mRecyclerView.getAdapter()).refreshData(coinList);
         }
     }
 

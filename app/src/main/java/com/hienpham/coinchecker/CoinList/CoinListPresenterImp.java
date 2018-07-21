@@ -19,6 +19,11 @@ public class CoinListPresenterImp implements CoinListContract.CoinListPresenter,
     }
 
     @Override
+    public void getCoinListInterval() {
+        mModel.getCoinListInterval(RemoteCoinService.CMC_START_DEFAULT, 60000);
+    }
+
+    @Override
     public void onResume() {
         loadCoinList(RemoteCoinService.CMC_START_DEFAULT);
     }
@@ -33,7 +38,12 @@ public class CoinListPresenterImp implements CoinListContract.CoinListPresenter,
     public void onCoinListLoaded(List<Coin> coinList) {
         if(null != mView){
             mView.hideLoading();
-            mView.populateCoinlist(coinList);
+            Coin lastCoin = coinList.get(coinList.size()-1);
+            if(lastCoin.getRank() > 100) {
+                mView.populateCoinlist(coinList);
+            } else {
+                mView.refreshCoinList(coinList);
+            }
         }
     }
 

@@ -16,7 +16,9 @@ import com.hienpham.coinchecker.Model.Coin;
 import com.hienpham.coinchecker.R;
 import com.hienpham.coinchecker.Utils.CoinIconLoader;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CoinListAdapter extends Adapter<CoinListAdapter.CoinViewHolder> {
@@ -31,6 +33,14 @@ public class CoinListAdapter extends Adapter<CoinListAdapter.CoinViewHolder> {
     public void setData(@NonNull List<Coin> listCoin) {
         if(null == this.mData || listCoin.size() == 0 ) return;
 
+        this.mData.addAll(listCoin);
+        notifyDataSetChanged();
+    }
+
+    public void refreshData(@NonNull List<Coin> listCoin) {
+        if (null == this.mData) mData = new ArrayList<>();
+
+        this.mData.clear();
         this.mData.addAll(listCoin);
         notifyDataSetChanged();
     }
@@ -60,6 +70,7 @@ public class CoinListAdapter extends Adapter<CoinListAdapter.CoinViewHolder> {
         TextView coinName;
         TextView coinPrice;
         TextView changeIn24h;
+        TextView lastUpdated;
 
         public CoinViewHolder(View itemView) {
             super(itemView);
@@ -69,13 +80,14 @@ public class CoinListAdapter extends Adapter<CoinListAdapter.CoinViewHolder> {
             coinName = rootView.findViewById(R.id.coinName);
             coinPrice = rootView.findViewById(R.id.coinPrice);
             changeIn24h = rootView.findViewById(R.id.changeIn24h);
+            lastUpdated = rootView.findViewById(R.id.updated);
         }
 
         public void renderRowView(Coin rowData) {
             CoinIconLoader.loadIcon(mContext,rowData.getId(),this.icon);
             coinName.setText(rowData.getName());
             coinPrice.setText("$ " + String.valueOf(rowData.getQuotes().getUSD().getPrice()));
-            changeIn24h.setText(String.valueOf(rowData.getQuotes().getUSD().getPercent_change_24h()) + "%");
+            changeIn24h.setText(String.valueOf(rowData.getQuotes().getUSD().getPercent_change_24h()) + "% (24h)");
 
             int change24HColor;
             if (rowData.getQuotes().getUSD().getPercent_change_24h() > 0) {
@@ -84,6 +96,12 @@ public class CoinListAdapter extends Adapter<CoinListAdapter.CoinViewHolder> {
                 change24HColor = ContextCompat.getColor(mContext,R.color.dumpRed);
             }
             this.changeIn24h.setTextColor(change24HColor);
+
+            //last updated
+            Date date = new Date(rowData.getLast_updated() * 1000L);
+            String formattedDate = new SimpleDateFormat("dd-MM-yyyy hh:mm a").format(date);
+
+            this.lastUpdated.setText(formattedDate);
         }
     }
 }

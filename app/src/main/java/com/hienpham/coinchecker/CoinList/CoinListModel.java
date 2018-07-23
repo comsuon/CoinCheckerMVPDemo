@@ -9,7 +9,7 @@ public interface CoinListModel {
 
     void getCoinList(int start);
 
-    void getSpecificCoin(int id);
+    Coin getSpecificCoin(int id);
 
     interface CoinListModelCallbacks {
         void onCoinListLoaded(List<Coin> coinList);

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -16,6 +17,8 @@ import com.hienpham.coinchecker.Model.Coin;
 import com.hienpham.coinchecker.R;
 
 import java.util.List;
+
+import io.realm.Realm;
 
 public class CoinListActivity extends BaseActivity implements CoinListContract.CoinListView {
 
@@ -34,17 +37,25 @@ public class CoinListActivity extends BaseActivity implements CoinListContract.C
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Realm.init(getApplicationContext());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin_list);
         setUpToolbar((Toolbar) findViewById(R.id.toolbar));
         setTitle(R.string.app_name);
+
         initPresenter();
 
         mProgressBar = findViewById(R.id.progressBar);
 
         mRecyclerView = findViewById(R.id.rv);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new CoinListAdapter(this));
+        mRecyclerView.setAdapter(new CoinListAdapter(this, new CoinListAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(View view, Coin coin, int position) {
+                mPresenter.getSpecificCoin(coin.getId());
+            }
+        }));
 
         mRefreshLayout = findViewById(R.id.refreshLayout);
 
@@ -91,6 +102,11 @@ public class CoinListActivity extends BaseActivity implements CoinListContract.C
         if(null != this.mRecyclerView && null != this.mRecyclerView.getAdapter()) {
             ((CoinListAdapter)this.mRecyclerView.getAdapter()).refreshData(coinList);
         }
+    }
+
+    @Override
+    public void showCoin(Coin coin) {
+        Toast.makeText(this,coin.getName(),Toast.LENGTH_SHORT).show();
     }
 
     private void initPresenter(){

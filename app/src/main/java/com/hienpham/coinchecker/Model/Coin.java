@@ -1,6 +1,10 @@
 package com.hienpham.coinchecker.Model;
 
-public class Coin {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Coin extends RealmObject{
+    @PrimaryKey
     int id;
     String name;
     int rank;

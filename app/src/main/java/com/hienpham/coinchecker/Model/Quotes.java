@@ -1,6 +1,8 @@
 package com.hienpham.coinchecker.Model;
 
-public class Quotes {
+import io.realm.RealmObject;
+
+public class Quotes extends RealmObject {
     Currency USD;
 
     public Currency getUSD() {

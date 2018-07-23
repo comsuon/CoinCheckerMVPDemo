@@ -1,6 +1,8 @@
 package com.hienpham.coinchecker.Model;
 
-public class Currency {
+import io.realm.RealmObject;
+
+public class Currency extends RealmObject{
     public float price;
     public double volume_24h;
     public float percent_change_24h;

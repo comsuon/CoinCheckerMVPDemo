@@ -39,7 +39,8 @@ public class CoinListModelImp implements CoinListModel, CoinListRepository.CoinL
     }
 
     @Override
-    public void getSpecificCoin(int id) {
+    public Coin getSpecificCoin(int id) {
+        return mDataManager.getSpecificCoin(id);
     }
 
     @Override
@@ -47,10 +48,5 @@ public class CoinListModelImp implements CoinListModel, CoinListRepository.CoinL
         if(null != mListener){
             mListener.onCoinListLoaded(coinList);
         }
-    }
-
-    @Override
-    public void onSpecificCoinLoaded(Coin coin) {
-
     }
 }

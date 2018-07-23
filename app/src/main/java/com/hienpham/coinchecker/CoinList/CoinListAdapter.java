@@ -2,7 +2,6 @@ package com.hienpham.coinchecker.CoinList;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ServiceCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
@@ -24,10 +23,12 @@ import java.util.List;
 public class CoinListAdapter extends Adapter<CoinListAdapter.CoinViewHolder> {
     List<Coin> mData;
     Context mContext;
+    OnItemClickListener mItemClickListener;
 
-    public CoinListAdapter (Context context) {
+    public CoinListAdapter (Context context, OnItemClickListener listener) {
         this.mContext = context;
         this.mData = new ArrayList<>();
+        this.mItemClickListener = listener;
     }
 
     public void setData(@NonNull List<Coin> listCoin) {
@@ -55,6 +56,7 @@ public class CoinListAdapter extends Adapter<CoinListAdapter.CoinViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull CoinViewHolder holder, int position) {
         holder.renderRowView(this.mData.get(position));
+        holder.setOnClickListener(mItemClickListener, this.mData.get(position), position);
     }
 
 
@@ -103,5 +105,18 @@ public class CoinListAdapter extends Adapter<CoinListAdapter.CoinViewHolder> {
 
             this.lastUpdated.setText(formattedDate);
         }
+
+        public void setOnClickListener(final OnItemClickListener listener, final Coin coin, final int position) {
+            rootView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onClick(v, coin, position);
+                }
+            });
+        }
+    }
+
+    public interface OnItemClickListener {
+        void onClick(View view, Coin coin, int position);
     }
 }

@@ -28,12 +28,6 @@ public class CoinListPresenterImp implements CoinListContract.CoinListPresenter,
         loadCoinList(RemoteCoinService.CMC_START_DEFAULT);
     }
 
-    @Override
-    public void getSpecificCoin(int id) {
-        Coin coin = mModel.getSpecificCoin(id);
-        mView.showCoin(coin);
-    }
-
     private void loadCoinList(int start) {
         mView.showLoading();
         mModel.getCoinList(start);

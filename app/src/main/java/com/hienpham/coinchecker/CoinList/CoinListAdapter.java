@@ -91,13 +91,11 @@ public class CoinListAdapter extends Adapter<CoinListAdapter.CoinViewHolder> {
             coinPrice.setText("$ " + String.valueOf(rowData.getQuotes().getUSD().getPrice()));
             changeIn24h.setText(String.valueOf(rowData.getQuotes().getUSD().getPercent_change_24h()) + "% (24h)");
 
-            int change24HColor;
-            if (rowData.getQuotes().getUSD().getPercent_change_24h() > 0) {
-                change24HColor = ContextCompat.getColor(mContext,R.color.lightControl);
-            } else {
-                change24HColor = ContextCompat.getColor(mContext,R.color.dumpRed);
+            this.changeIn24h.setTextColor(ContextCompat.getColor(mContext, R.color.lightControl));
+
+            if (rowData.getQuotes().getUSD().getPercent_change_24h() < 0) {
+                this.changeIn24h.setTextColor(ContextCompat.getColor(mContext,R.color.dumpRed));
             }
-            this.changeIn24h.setTextColor(change24HColor);
 
             //last updated
             Date date = new Date(rowData.getLast_updated() * 1000L);

@@ -6,6 +6,7 @@ public class Currency extends RealmObject{
     public float price;
     public double volume_24h;
     public float percent_change_24h;
+    public float percent_change_1h;
 
     public float getPrice() {
         return price;
@@ -29,5 +30,9 @@ public class Currency extends RealmObject{
 
     public void setPercent_change_24h(float percent_change_24h) {
         this.percent_change_24h = percent_change_24h;
+    }
+
+    public float getPercent_change_1h() {
+        return percent_change_1h;
     }
 }

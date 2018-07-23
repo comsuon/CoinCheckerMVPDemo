@@ -13,10 +13,12 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.hienpham.coinchecker.BaseActivity;
+import com.hienpham.coinchecker.CoinPopup.CoinPopup;
 import com.hienpham.coinchecker.Model.Coin;
 import com.hienpham.coinchecker.R;
 
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import io.realm.Realm;
 
@@ -53,7 +55,7 @@ public class CoinListActivity extends BaseActivity implements CoinListContract.C
         mRecyclerView.setAdapter(new CoinListAdapter(this, new CoinListAdapter.OnItemClickListener() {
             @Override
             public void onClick(View view, Coin coin, int position) {
-                mPresenter.getSpecificCoin(coin.getId());
+                new CoinPopup(CoinListActivity.this, coin.getId());
             }
         }));
 
@@ -102,11 +104,6 @@ public class CoinListActivity extends BaseActivity implements CoinListContract.C
         if(null != this.mRecyclerView && null != this.mRecyclerView.getAdapter()) {
             ((CoinListAdapter)this.mRecyclerView.getAdapter()).refreshData(coinList);
         }
-    }
-
-    @Override
-    public void showCoin(Coin coin) {
-        Toast.makeText(this,coin.getName(),Toast.LENGTH_SHORT).show();
     }
 
     private void initPresenter(){

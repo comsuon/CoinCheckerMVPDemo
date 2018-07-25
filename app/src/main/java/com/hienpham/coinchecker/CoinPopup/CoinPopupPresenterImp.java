@@ -3,6 +3,7 @@ package com.hienpham.coinchecker.CoinPopup;
 import android.util.Log;
 
 import com.hienpham.coinchecker.BaseView;
+import com.hienpham.coinchecker.DataLayer.CoinListData.LocalData.LocalData;
 import com.hienpham.coinchecker.Model.Coin;
 
 import io.reactivex.MaybeObserver;
@@ -44,7 +45,7 @@ public class CoinPopupPresenterImp implements CoinPopupContract.CoinPopupPresent
 
             @Override
             public void onComplete() {
-
+                LocalData.getRealm().close();
             }
         });
     }

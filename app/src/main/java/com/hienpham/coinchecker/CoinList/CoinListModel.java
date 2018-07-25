@@ -1,15 +1,12 @@
 package com.hienpham.coinchecker.CoinList;
 
-import com.hienpham.coinchecker.Model.Coin;
+import com.hienpham.coinchecker.Model.CoinListRes;
 
-import java.util.List;
+import io.reactivex.Flowable;
 
 public interface CoinListModel {
-    void getCoinListInterval(int start, long timer);
+    Flowable<CoinListRes> getCoinListInterval(int start, long timer);
 
-    void getCoinList(int start);
+    Flowable<CoinListRes> getCoinList(int start);
 
-    interface CoinListModelCallbacks {
-        void onCoinListLoaded(List<Coin> coinList);
-    }
 }

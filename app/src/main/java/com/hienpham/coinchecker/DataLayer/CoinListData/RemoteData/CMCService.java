@@ -5,6 +5,7 @@ import com.hienpham.coinchecker.Model.CoinListRes;
 
 import java.util.List;
 
+import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -15,9 +16,9 @@ public interface CMCService{
 
     @Headers("Cache-Control: no-cache")
     @GET("ticker/?structure=array")
-    Call<CoinListRes> getCoinList(@Query("start") int start);
+    Single<CoinListRes> getCoinList(@Query("start") int start);
 
 
     @GET("ticker/")
-    Call<Coin> getSpecificCoin(@Query("id") int coinID);
+    Single<Coin> getSpecificCoin(@Query("id") int coinID);
 }

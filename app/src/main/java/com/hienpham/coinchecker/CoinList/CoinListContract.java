@@ -16,7 +16,7 @@ public class CoinListContract {
     }
 
     public interface CoinListPresenter extends BasePresenter {
-        void getCoinListInterval();
-        void onResume();
+        void initCoinList();
+        void onRefreshCoinList();
     }
 }

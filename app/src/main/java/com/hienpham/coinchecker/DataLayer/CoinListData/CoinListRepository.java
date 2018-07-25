@@ -1,14 +1,12 @@
 package com.hienpham.coinchecker.DataLayer.CoinListData;
 
 import com.hienpham.coinchecker.Model.Coin;
+import com.hienpham.coinchecker.Model.CoinListRes;
 
-import java.util.List;
+import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 
 public interface CoinListRepository {
-    void getCoinList(int start);
-    Coin getSpecificCoin(int id);
-
-    interface CoinListDataCallbacks {
-        void onCoinListLoaded(List<Coin> coinList);
-    }
+    Flowable<CoinListRes> getCoinList(int start);
+    Maybe<Coin> getSpecificCoin(int id);
 }

@@ -16,12 +16,11 @@ public class CoinPopup extends AlertDialog implements CoinPopupContract.CoinPopu
     TextView tvCoinPrice;
     CoinPopupContract.CoinPopupPresenter mPresenter;
 
-    public CoinPopup(Context context, int coinId) {
+    public CoinPopup(Context context) {
         super(context);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mPresenter = new CoinPopupPresenterImp(coinId);
+        mPresenter = new CoinPopupPresenterImp();
         mPresenter.attachView(this);
-        mPresenter.getCoin(coinId);
     }
 
     @Override
@@ -60,5 +59,10 @@ public class CoinPopup extends AlertDialog implements CoinPopupContract.CoinPopu
     private void setText(String coinName, String coinPrice){
         tvCoinName.setText(coinName);
         tvCoinPrice.setText(coinPrice);
+    }
+
+    public void showPopup(int coinID){
+
+        mPresenter.getCoin(coinID);
     }
 }

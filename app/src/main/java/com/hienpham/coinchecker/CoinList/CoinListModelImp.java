@@ -2,46 +2,30 @@ package com.hienpham.coinchecker.CoinList;
 
 import com.hienpham.coinchecker.DataLayer.CoinListData.CoinListRepository;
 import com.hienpham.coinchecker.DataLayer.CoinListData.CoinListRepositoryImp;
-import com.hienpham.coinchecker.Model.Coin;
+import com.hienpham.coinchecker.Model.CoinListRes;
 
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
-public class CoinListModelImp implements CoinListModel, CoinListRepository.CoinListDataCallbacks {
+import io.reactivex.Flowable;
+
+public class CoinListModelImp implements CoinListModel {
 
     CoinListRepository mDataManager;
-    CoinListModelCallbacks mListener;
-    boolean timerRunning;
+    CoinListContract.CoinListPresenter mPresenter;
 
-    public CoinListModelImp(CoinListModelCallbacks listener){
-        this.mListener = listener;
-        mDataManager = new CoinListRepositoryImp(this);
-        timerRunning = false;
+    public CoinListModelImp(CoinListContract.CoinListPresenter presenter){
+        this.mPresenter = presenter;
+        mDataManager = new CoinListRepositoryImp();
     }
 
     @Override
-    public void getCoinListInterval(final int start, final long timer) {
-        if (timerRunning) return;
-
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                mDataManager.getCoinList(start);
-                timerRunning = true;
-            }
-        }, 0, timer);
+    public Flowable<CoinListRes> getCoinListInterval(final int start, final long timer) {
+        return Flowable.interval(0,timer, TimeUnit.MINUTES)
+                .flatMap(t -> mDataManager.getCoinList(start));
     }
 
     @Override
-    public void getCoinList(int start) {
-        mDataManager.getCoinList(start);
-    }
-
-    @Override
-    public void onCoinListLoaded(List<Coin> coinList) {
-        if(null != mListener){
-            mListener.onCoinListLoaded(coinList);
-        }
+    public Flowable<CoinListRes> getCoinList(int start) {
+        return mDataManager.getCoinList(start);
     }
 }

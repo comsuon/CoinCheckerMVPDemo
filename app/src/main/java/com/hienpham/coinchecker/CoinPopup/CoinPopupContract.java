@@ -4,6 +4,8 @@ import com.hienpham.coinchecker.BasePresenter;
 import com.hienpham.coinchecker.BaseView;
 import com.hienpham.coinchecker.Model.Coin;
 
+import io.reactivex.Maybe;
+
 public class CoinPopupContract {
     interface CoinPopupView extends BaseView{
         void showPumpFace(Coin coin);
@@ -15,6 +17,6 @@ public class CoinPopupContract {
     }
 
     interface CoinPopupModel {
-        Coin getCoinData(int id);
+        Maybe<Coin> getCoinData(int id);
     }
 }
